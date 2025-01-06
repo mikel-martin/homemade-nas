@@ -17,8 +17,6 @@ def initialize(app):
         path = request.args.get("path")
         if not path:
             return "Path not provided", 400
-        # if path not in ["/home"]:
-        #     return "Access denied", 401
         folder = get_folder(path)
         print(folder)
         return render_template("folder.html", folder=folder, current_path=path)
