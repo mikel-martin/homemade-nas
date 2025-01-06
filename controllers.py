@@ -7,6 +7,8 @@ import utils
 
 def get_devices():
 
+    utils.allowed_extensions()
+
     result = subprocess.run("df -h | grep -v none | grep ^/dev", shell=True, text=True, capture_output=True, check=True)
 
     devices = []
@@ -42,11 +44,7 @@ def get_folder(path):
         item["abs"] = abs_path
         item["rel"] = rel_path
 
-        print(abs_path)
-        if is_dir:
-            item["size"] = utils.get_folder_size(abs_path)
-        else:
-            item["size"] = utils.get_file_size(abs_path)
+        item["size"] = utils.get_file_size(abs_path) if not is_dir else "-"
 
         item["is_dir"] = 1 if is_dir else 0
         

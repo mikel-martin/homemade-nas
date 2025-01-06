@@ -31,6 +31,20 @@
 
     </script>
 
+    <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data" class="d-flex gap-4">
+        <button id="files-btn" class="d-flex gap-2 align-items-center btn btn-light" onclick="hideUploadSuccessAlert()">
+            <img src="{{ url_for('static', filename='img/upload.svg') }}" alt="Upload" width="24" height="24">
+            <p class="m-0">Upload <span class="message opacity-75"></span></p>
+        </button>
+        <input type="file" name="files" id="files" accept="{% for ext in allowed_extensions %}.{{ ext }}{% if not loop.last %}, {% endif %}{% endfor %}" style="display: none;" multiple required>
+        <button id="upload-btn" type="submit" class="btn btn-primary" style="display: none;">Upload</button>
+    </form>
+
+    <div id="upload-success-alert" class="alert alert-primary alert-dismissible fade show" role="alert" style="display: none;">
+        <strong>Upload completed!</strong> <span class="message"></span> <span>(<a onclick="window.location.reload()" href="#">Reload</a> page to see changes)</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <header class="d-flex gap-4 align-items-center">
         <button onclick="back()" class="btn btn-icon btn-light">
             <img src="{{ url_for('static', filename='img/back.svg') }}" alt="File" width="24" height="24">
@@ -61,26 +75,73 @@
             });
         }
 
-        // var files = document.querySelectorAll(".file");
-        
-        // if (files) {
-        //     files.forEach(element => {
-        //         element.addEventListener("mouseover", () => {
-        //             let options = element.querySelector(".options");
-        //             if (options) {
-        //                 options.style.display = "block";
-        //             } 
-        //         });
-        //         element.addEventListener("mouseout", () => {
-        //             let options = element.querySelector(".options");
-        //             if (options) {
-        //                 options.style.display = "none";
-        //             } 
-        //         });
-        //     });
-        // }
-    
-    
+        hideUploadSuccessAlert();
+
+        document.getElementById("files-btn").addEventListener("click", () => {
+            document.getElementById("upload-form").reset();
+            document.getElementById("files").click();
+        });
+
+        document.getElementById("files").addEventListener("change", (event) => {
+            console.log(event.target.files);
+            const selected = event.target.files.length;
+            if (selected > 0) {
+                document.getElementById("upload-btn").style.display = "block";
+            } else {
+                document.getElementById("upload-btn").style.display = "none";
+            }
+            document.getElementById("files-btn").querySelector(".message").innerHTML = `${selected} files selected`;
+        });
+
+        document.getElementById("upload-form").addEventListener("submit", (event) => {
+
+            hideUploadSuccessAlert();
+
+            event.preventDefault();
+
+            let files = document.getElementById("files").files;
+
+            if (files && files.length === 0) {
+                return;
+            }
+
+            let formData = new FormData();
+
+            for (let file of files) {
+                formData.append("files", file);
+            }
+
+            formData.append("path", current_path);
+
+            fetch("/upload", {
+                method: "POST", 
+                body: formData
+            }).then(res => res.json())
+                .then(res => {
+                    console.log(res);
+                    showUploadSuccessAlert(`${res.length}/${files.length} files saved successfully`);
+                    document.getElementById("upload-form").reset();
+                });
+
+        });
+
+        function showUploadSuccessAlert(message) {
+            const alert = document.getElementById("upload-success-alert"); 
+            if (alert) {
+                alert.style.display = "block";
+                if (message) {
+                    alert.querySelector(".message").innerHTML = message;
+                }
+            }
+        }
+
+        function hideUploadSuccessAlert() {
+            const alert = document.getElementById("upload-success-alert"); 
+            if (alert) {
+                alert.style.display = "none";
+            }
+        }
+
     </script>
 
 {% endblock %}

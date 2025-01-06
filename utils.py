@@ -4,6 +4,23 @@ import os
 
 UNITS = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB']
 
+def allowed_extensions():
+    extensions = []
+    allowed_extensions_str = os.getenv("ALLOWED_EXTENSIONS")
+    if allowed_extensions_str:
+        allowed_extensions_str_splitted = allowed_extensions_str.split(",")
+        if len(allowed_extensions_str_splitted) > 0:
+            for ext in allowed_extensions_str_splitted:
+                extensions.append(ext.strip().replace(".", "").lower())
+    return extensions
+
+
+def allowed_file(filename):
+    extensions = allowed_extensions()
+    if "." in filename and len(extensions) > 0:
+        return "." in filename and filename.rsplit(".", 1)[1].lower() in allowed_extensions()
+    return True
+
 
 def get_file_size(path):
 
