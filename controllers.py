@@ -43,7 +43,10 @@ def get_folder(path):
         item["rel"] = rel_path
 
         print(abs_path)
-        item["size"] = utils.get_file_size(abs_path)
+        if is_dir:
+            item["size"] = utils.get_folder_size(abs_path)
+        else:
+            item["size"] = utils.get_file_size(abs_path)
 
         item["is_dir"] = 1 if is_dir else 0
         
