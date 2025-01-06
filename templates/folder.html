@@ -16,7 +16,7 @@
             path_splitted.pop();
             const back = path_splitted.join("/");
             console.log(back);
-            if (back === "/") {
+            if (back) {
                 window.location = `/folder?path=${back}`;
             } else {
                 window.location = "/";
@@ -31,11 +31,11 @@
 
     </script>
 
-    <header class="d-flex gap-2 align-items-center">
-        <button onclick="back()" class="btn btn-light">
-            <img src="{{ url_for('static', filename='img/back.svg') }}" alt="File">
+    <header class="d-flex gap-4 align-items-center">
+        <button onclick="back()" class="btn btn-icon btn-light">
+            <img src="{{ url_for('static', filename='img/back.svg') }}" alt="File" width="24" height="24">
         </button>
-        <h2 class="m-0">{{ current_path }}</h2>
+        <h3 class="m-0">{{ current_path }}</h3>
     </header>
 
     {% import "components/folder_item.html" as folder_item %}
@@ -48,24 +48,37 @@
 
     <script>
 
-        var files = document.querySelectorAll(".file");
-        
-        if (files) {
-            files.forEach(element => {
+        var folder_items = document.querySelectorAll(".folder-item");
+
+        if (folder_items) {
+            folder_items.forEach(element => {
                 element.addEventListener("mouseover", () => {
-                    let options = element.querySelector(".options");
-                    if (options) {
-                        options.style.display = "block";
-                    } 
+                    element.classList.add("bg-primary", "bg-opacity-10"); 
                 });
                 element.addEventListener("mouseout", () => {
-                    let options = element.querySelector(".options");
-                    if (options) {
-                        options.style.display = "none";
-                    } 
+                    element.classList.remove("bg-primary", "bg-opacity-10");
                 });
             });
         }
+
+        // var files = document.querySelectorAll(".file");
+        
+        // if (files) {
+        //     files.forEach(element => {
+        //         element.addEventListener("mouseover", () => {
+        //             let options = element.querySelector(".options");
+        //             if (options) {
+        //                 options.style.display = "block";
+        //             } 
+        //         });
+        //         element.addEventListener("mouseout", () => {
+        //             let options = element.querySelector(".options");
+        //             if (options) {
+        //                 options.style.display = "none";
+        //             } 
+        //         });
+        //     });
+        // }
     
     
     </script>

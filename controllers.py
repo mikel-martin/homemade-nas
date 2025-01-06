@@ -2,6 +2,8 @@ from flask import render_template, send_from_directory
 import subprocess
 import os
 
+import utils
+
 
 def get_devices():
 
@@ -39,6 +41,9 @@ def get_folder(path):
 
         item["abs"] = abs_path
         item["rel"] = rel_path
+
+        print(abs_path)
+        item["size"] = utils.get_file_size(abs_path)
 
         item["is_dir"] = 1 if is_dir else 0
         

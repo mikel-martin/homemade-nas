@@ -1,23 +1,29 @@
 {% macro folder_item(item) %}
 
-<div onclick="open_folder({{ item | safe }})" class="folder-item d-flex gap-2 justify-content-between align-items-center rounded p-2 {{ 'file' if not item.is_dir }}">
+<div ondblclick="open_folder({{ item | safe }})" class="folder-item d-flex gap-2 justify-content-between align-items-center rounded p-2 {{ 'file' if not item.is_dir }}">
+    
     <div class="d-flex gap-2 align-items-center">
         {% if item.is_dir %}
-            <img src="{{ url_for('static', filename='img/folder.svg') }}" alt="Folder">
+            <img src="{{ url_for('static', filename='img/folder.svg') }}" alt="Folder" width="24" height="24">
         {% else %}
-            <img src="{{ url_for('static', filename='img/file.svg') }}" alt="File">
+            <img src="{{ url_for('static', filename='img/file.svg') }}" alt="File" width="24" height="24">
         {% endif %}
+        
         <p class="name m-0">
             <span>{{ item.rel }}</span>
         </p>
     </div>
-    {% if not item.is_dir %}
-        <div class="options">
-            <button onclick="window.location.href = '{{ url_for('download', path=item.abs) }}'" class="btn btn-light">
-                <img src="{{ url_for('static', filename='img/download.svg') }}" alt="File">
-            </button>
-        </div>
-    {% endif %}
+
+    <div>
+    </div>
+    
+    <div class="options d-flex gap-4 align-items-center">
+        <p class="text-muted m-0">{{ item.size }}</p>
+        <button onclick="window.open('{{ url_for('download', path=item.abs) }}', '_blank')" class="btn btn-icon btn-light">
+            <img src="{{ url_for('static', filename='img/download.svg') }}" alt="File" width="24" height="24">
+        </button>
+    </div>
+
 </div>
 
 {% endmacro %}

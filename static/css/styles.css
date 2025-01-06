@@ -1,6 +1,12 @@
-.device-list {
-
+.btn.btn-icon {
+    border-radius: 50%;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 
 .device-item {
  
@@ -18,13 +24,18 @@
 
 }
 
-.folder-item:hover {
-
-    cursor: pointer;
-    transition: 0.2s;
-    background-color: #f8f8f8;
-
+.folder-item {
+    height: 56px;
 }
+
+.folder-item:hover {
+    transition: 0.2s;
+}
+
+.folder-item:not(.file):hover {
+    cursor: pointer;
+}
+
 
 .folder-item.file .options {
     display: none;
