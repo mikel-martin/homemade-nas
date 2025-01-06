@@ -15,7 +15,12 @@
             const path_splitted = current_path.split("/");
             path_splitted.pop();
             const back = path_splitted.join("/");
-            window.location = `/folder?path=${back}`;
+            console.log(back);
+            if (back === "/") {
+                window.location = `/folder?path=${back}`;
+            } else {
+                window.location = "/";
+            }
         }
 
         function open_folder(entry) {
@@ -40,5 +45,29 @@
             {{ folder_item.folder_item(item) }}
         {%endfor%}
     </div>
+
+    <script>
+
+        var files = document.querySelectorAll(".file");
+        
+        if (files) {
+            files.forEach(element => {
+                element.addEventListener("mouseover", () => {
+                    let options = element.querySelector(".options");
+                    if (options) {
+                        options.style.display = "block";
+                    } 
+                });
+                element.addEventListener("mouseout", () => {
+                    let options = element.querySelector(".options");
+                    if (options) {
+                        options.style.display = "none";
+                    } 
+                });
+            });
+        }
+    
+    
+    </script>
 
 {% endblock %}

@@ -1,6 +1,6 @@
+from flask import render_template, send_from_directory
 import subprocess
 import os
-import json
 
 
 def get_devices():
@@ -46,17 +46,12 @@ def get_folder(path):
 
     return result
 
-    # def read_folder(path):
-    #     result = {}
-    #     try:
-    #         with os.scandir(path) as entries:
-    #             for entry in entries:
-    #                 if entry.is_dir():
-    #                     result[entry.name] = read_folder(entry.path)
-    #                 elif entry.is_file():
-    #                     result[entry.name] = None
-    #     except PermissionError:
-    #         result = "Access denied"
-    #     return result
+def download(abs_path):
 
-    # return {os.path.basename(path): read_folder(path)}
+    if not abs_path:
+        return render_template("error.html", error_code=400, message="Path not provided")
+
+    if not os.path.exists(abs_path):
+        return render_template("error.html", error_code=400, message="File not found")
+
+    return send_from_directory(os.path.dirname(abs_path), os.path.basename(abs_path), as_attachment=True)
