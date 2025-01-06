@@ -1,5 +1,7 @@
 ## How to start the application
 
+This application must run on a Linux operating system.
+
 1. Create virtual environment
 
 ```
