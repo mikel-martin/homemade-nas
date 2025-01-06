@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    <script>
+
+        let folder = {{ folder | tojson | safe }};
+
+        const query_params = new URLSearchParams(window.location.search);
+        const current_path = query_params.get("path");
+
+        var clicked_path = {};
+
+        function back() {
+            const path_splitted = current_path.split("/");
+            path_splitted.pop();
+            const back = path_splitted.join("/");
+            window.location = `/folder?path=${back}`;
+        }
+
+        function open_folder(entry) {
+            if (entry.is_dir) {
+                window.location = `/folder?path=${entry.abs}`;
+            }
+        }
+
+    </script>
+
+    <header class="d-flex gap-2 align-items-center">
+        <button onclick="back()" class="btn btn-light">
+            <img src="{{ url_for('static', filename='img/back.svg') }}" alt="File">
+        </button>
+        <h2 class="m-0">{{ current_path }}</h2>
+    </header>
+
+    {% import "components/folder_item.html" as folder_item %}
+
+    <div id class="d-flex flex-column gap-2">
+        {% for item in folder %}
+            {{ folder_item.folder_item(item) }}
+        {%endfor%}
+    </div>
+
+{% endblock %}

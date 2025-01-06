@@ -1,0 +1,27 @@
+.device-list {
+
+}
+
+.device-item {
+ 
+    width: 20vh;
+    max-width: 350px;
+    min-width: 250px;
+
+}
+
+.device-item:hover {
+ 
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: #f8f8f8;
+
+}
+
+.folder-item:hover {
+
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: #f8f8f8;
+
+}

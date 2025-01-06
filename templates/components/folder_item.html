@@ -1,0 +1,15 @@
+{% macro folder_item(item) %}
+
+<div onclick="open_folder({{ item | safe }})" class="folder-item d-flex gap-2 align-items-center rounded p-2">
+    {% if item.is_dir %}
+        <img src="{{ url_for('static', filename='img/folder.svg') }}" alt="Folder">
+    {% else %}
+        <img src="{{ url_for('static', filename='img/file.svg') }}" alt="File">
+    {% endif %}
+    <p class="name m-0">
+        <span>{{ item.rel }}</span>
+    </p>
+
+</div>
+
+{% endmacro %}
